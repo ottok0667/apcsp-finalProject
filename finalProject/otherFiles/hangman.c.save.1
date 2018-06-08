@@ -1,0 +1,115 @@
+#include <stdio.h>
+#include <string.h>
+
+void recievePhrase()
+{
+
+//let user input a phrase to be guessed
+  char inputPhrase[250], phrase[250];
+  char lettGuessed[250];
+  int i = 0;
+  int lettRound;
+
+  printf("Input a word or phrase to be guessed\nNote: Characters that are not letters (e.g. commas, numbers, spaces, etc.) will not need to be guessed\n");
+
+  fgets(inputPhrase, 250, stdin);
+  strcpy(phrase, inputPhrase);
+
+  for (i = 0; i < (strlen(inputPhrase) - 1); i++)
+  {
+    if (((inputPhrase[i] >= 'a') && (inputPhrase[i] <= 'z')) || ((inputPhrase[i] >= 'A') && (inputPhrase[i] <= 'Z')))
+    {
+      phrase[i] = '_';
+    }
+  }
+  printf("\n\n\n\n%s\n\n", phrase);
+
+//allow the user to input the difficulty level/how many characters are allowed to be guessed incorrectly
+  char diff[2];
+  int numErr;
+
+  printf("Input a difficulty level/the number of letters that will be allowed to be entered incorrectly: ");
+
+  while (1)
+  {
+    fgets(diff, 2, stdin);
+    if (sscanf(diff, "%d", &numErr) == 1) break;
+      printf("Not a valid difficulty level - try again!\n");
+  }
+
+int miss = 0;
+
+//loop until player wins or loses
+
+  while ((!(strcmp(inputPhrase, phrase) == 0)) && (miss < numErr))
+  {
+  //now allow for user to input letters as guesses
+    char alphachar[2], car[2];
+    int n = 0;
+    int numLett = 0;
+
+   lettRound++;
+
+
+    if (lettRound > 1)
+    {
+      printf("Letters Already Guessed:%s\n", lettGuessed);
+    
+printf("Enter a letter to guess: ");
+
+    while (1)
+    {
+      fgets(alphachar, 2, stdin);
+      if (sscanf(alphachar, "%s", &car) == 1) break;
+//        printf("Not a valid character input - try again!\n");
+    }
+
+  lettGuessed[strlen(lettGuessed)] = car[0];
+
+  //check to see if the character entered is in the entered phrase
+    for (n = 0; n < (strlen(inputPhrase)); n++)
+    {
+      if (inputPhrase[n] == car[0])
+      {
+        phrase[n] = car[0];
+        numLett++;
+      }
+    }
+
+    if (numLett == 0)
+    {
+      miss++;
+      printf("Wrong guess! You have made %d wrong guesses out of %d allowed\n", miss, numErr);
+    }
+    printf("%s\n", phrase);
+
+  }
+  if (strcmp(inputPhrase, phrase) == 0)
+  {
+    printf("You Win!\n");
+  }
+
+  if (miss >= numErr)
+  {
+    printf("You Lose\n");
+  }
+
+}
+
+int main()
+{
+  char cont[2], ans[2];
+
+  recievePhrase();
+
+
+  while (1)
+  {
+  printf("Do you wish to play again? (y/n)");
+  fgets(cont, 2, stdin);
+  if (cont[0] == 'y')
+  {
+    recievePhrase();
+  }
+  }
+}

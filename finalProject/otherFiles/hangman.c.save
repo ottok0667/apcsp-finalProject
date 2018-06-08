@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <string.h>
+
+void recievePhrase()
+{
+
+//let user input a phrase to be guessed
+  char inputPhrase[250], phrase[250];
+  int i = 0;
+
+  printf("Input a word or phrase to be guessed\nNote: Characters that are not letters (e.g. commas, numbers, spaces, etc.) will not need to be guessed\n");
+
+  fgets(inputPhrase, 250, stdin);
+  strcpy(phrase, inputPhrase);
+
+  for (i = 0; i < (strlen(inputPhrase) - 1); i++)
+  {
+    if (((inputPhrase[i] >= 'a') && (inputPhrase[i] <= 'z')) || ((inputPhrase[i] >= 'A') && (inputPhrase[i] <= 'Z')))
+    {
+      phrase[i] = '_';
+    }
+  }
+  printf("\n\n\n\n%s\n\n", phrase);
+
+//allow the user to input the difficulty level/how many characters are allowed to be guessed incorrectly
+  char diff[2];
+  int numErr;
+
+  printf("Input a difficulty level/the number of letters that will be allowed to be entered incorrectly: ");
+
+  while (1)
+  {
+    fgets(diff, 2, stdin);
+    if (sscanf(diff, "%d", &numErr) == 1) break;
+      printf("Not a valid difficulty level - try again!\n");
+  }
+
+//now allow for user to input letters as guesses
+  char alphachar[2], car[2];
+  int n = 0;
+
+  printf("Enter a letter to guess: ");
+
+  while (1)
+  {
+  fgets(alphachar, 2, stdin);
+  if (sscanf(alphachar, "%s", &car) == 1) break;
+    printf("Not a valid character input - try again!\n");
+
+ 
+
+  for (n = 0; n < (strlen(inputPhrase) - 1); n++)
+  {
+    if (inputPhrase[n] == car[1])
+    {
+      phrase[n] = car[1];
+      printf("Hi");
+    }
+  }
+  printf("%s\n", phrase);
+
+}
+
+int main()
+{
+  recievePhrase();
+}
