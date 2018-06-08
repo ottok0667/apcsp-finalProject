@@ -1,6 +1,26 @@
 #include <stdio.h>
 #include <string.h>
 
+char outputArr[10][50];
+
+char writeFile()
+{
+  FILE *fp;
+  int i;
+
+  fp = fopen (" /home/kelsi/finalProject/websiteProgram/output.txt", "wb");
+
+  if (fp)
+  {
+    for (i = 0; i < 10; i++)
+    {
+      fputc(outputArr[i], fp);
+    }
+    fclose (fp);
+  }
+}
+
+
 void recievePhrase()
 {
 //let user input a phrase to be guessed
@@ -22,6 +42,8 @@ void recievePhrase()
     }
   }
   printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%s\n\n", phrase);
+
+  strcpy(outputArr[0], inputPhrase);
 
 //allow the user to input the difficulty level/how many characters are allowed to be guessed incorrectly
   char diff[75];
@@ -112,4 +134,5 @@ void hangmanMain()
     recievePhrase();
     getchar();
   } while (restartGame());
+  writeFile();
 }
