@@ -8,16 +8,39 @@ char writeFile()
   FILE *fp;
   int i;
 
-  fp = fopen (" /home/kelsi/finalProject/websiteProgram/output.txt", "wb");
+  fp = fopen ("/var/www/html/kelsi/output.txt", "wb");
 
   if (fp)
   {
+    fprintf(fp, "The following is a summary of the latest hangman game played on the terminal\n\n");
     for (i = 0; i < 10; i++)
     {
-      fputc(outputArr[i], fp);
+      if (i == 0)
+      {
+        fprintf(fp, "Input Phrase: ");
+      }
+      if (i == 2)
+      {
+        fprintf(fp, "Number of letters allowed to be guessed incorrectly: ");
+      }
+      if (i == 3)
+      {
+        fprintf(fp, "Number of letters guessed: ");
+      }
+      if (i == 4)
+      {
+        fprintf(fp, "Number of letters guessed incorrectly: ");
+      }
+      fprintf(fp, "%s\n", outputArr[i]);
+//      printf("%s", outputArr[i]);
     }
     fclose (fp);
   }
+  else
+  {
+    printf("File did not open correctly");
+  }
+  return 0;
 }
 
 
@@ -44,6 +67,7 @@ void recievePhrase()
   printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%s\n\n", phrase);
 
   strcpy(outputArr[0], inputPhrase);
+  strcpy(outputArr[1], phrase);
 
 //allow the user to input the difficulty level/how many characters are allowed to be guessed incorrectly
   char diff[75];
@@ -60,7 +84,10 @@ void recievePhrase()
       printf("Not a valid difficulty level - try again!\n");
   }
 
+  strcpy(outputArr[2], diff);
+
 int miss = 0;
+int letGuess = 0;
 
 //loop until player wins or loses
 
@@ -79,6 +106,8 @@ int miss = 0;
       if (sscanf(alphachar, "%s", car) == 1) break;
     }
 
+    letGuess++;
+    sprintf(outputArr[3], "%d",letGuess);
 
   //check to see if the character entered is in the entered phrase
     for (n = 0; n < (strlen(inputPhrase)); n++)
@@ -98,14 +127,19 @@ int miss = 0;
     printf("%s\n", phrase);
 
   }
+
+  sprintf(outputArr[4], "%d", miss);
+
   if (strcmp(inputPhrase, phrase) == 0)
   {
     printf("You Win!\n");
+    strcpy(outputArr[5], "You Won!");
   }
 
   if (miss >= numErr)
   {
     printf("You Lose\n");
+    strcpy(outputArr[5], "You Lost");
   }
 
 }
@@ -132,7 +166,8 @@ void hangmanMain()
 {
   do {
     recievePhrase();
+    writeFile();
     getchar();
   } while (restartGame());
-  writeFile();
+//  writeFile();
 }
